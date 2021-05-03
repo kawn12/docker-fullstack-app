@@ -1,0 +1,33 @@
+{
+    "AWSEBDockerrunVersoin": 2,
+    "containerDefinitions" : [
+        {
+            "name" : "frontend",
+            "image": "kawn12/docker-frontend",
+            "hostname" : "frontend",
+            "essential" : false,
+            "memory" : 128
+        },
+        {
+            "name" : "backend",
+            "image" : "kawn12/docker-backend",
+            "hostname" : "backend",
+            "essential" : false,
+            "memory" : 128
+        },
+        {
+            "name" : "nginx",
+            "image" : "kawn12/docker-nginx",
+            "hostname": "nginx",
+            "essential" : true,
+            "portMappings" : [
+                {
+                    "hostPort" : 80,
+                    "containerPort" : 80
+                }
+            ],
+            "links": ["frontend", "backend"],
+            "memory" : 128
+        }
+    ]
+}
