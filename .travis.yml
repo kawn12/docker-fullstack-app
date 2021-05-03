@@ -1,0 +1,23 @@
+language: generic
+
+sudo: required
+
+services: 
+  - docker
+
+before_install:
+  - docker build -t kawn12/react-test-app -f ./frontend/Dockerfile.dev ./frontend 
+
+script: 
+  - docker run -e CI=true kawn12/react-test-app npm run test
+
+after_success:
+  - docker build -t kawn12/docker-frontend ./frontend
+  - docker build -t kawn12/docker-backend ./bankend
+  - docker build -t kawn12/docker-nginx ./nginx
+
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
+
+  - docker push kawn12/docker-frontend
+  - docker push kawn12/docker-backend
+  - docker push kawn12/docker-nginx
